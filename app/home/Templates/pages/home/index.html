@@ -1,0 +1,58 @@
+{% extends 'layouts/default.html' %}
+
+
+{% block main %}
+  <div class="container my-3">
+    Trang chủ
+
+    {% comment %} <div class="row">
+      <!-- Loop through productsFeatured if they were passed in -->
+      <div class="col-3 mb-3">
+        <div class="product-item">
+          <div class="inner-image">
+            <a href="#">
+              <img src="path/to/thumbnail.jpg" alt="Product Title">
+            </a>
+          </div>
+          <div class="inner-content">
+            <h3 class="inner-title">
+              <a href="#">Product Title</a>
+            </h3>
+            <div class="inner-price-new">PriceNew$</div>
+            <div class="inner-price-old">Price$</div>
+            <div class="inner-discount">-DiscountPercentage%</div>
+          </div>
+        </div>
+      </div>
+      <!-- Repeat above block for each product if needed -->
+    </div>
+
+    <div class="row">
+      <div class="col-12">
+        {% include 'partials/box-head.html' with title="Sản phẩm mới" %}
+      </div>
+    </div>
+
+    <div class="row">
+      <!-- Loop through productsNew if they were passed in -->
+      <div class="col-3 mb-3">
+        <div class="product-item">
+          <div class="inner-image">
+            <a href="#">
+              <img src="path/to/thumbnail.jpg" alt="Product Title">
+            </a>
+          </div>
+          <div class="inner-content">
+            <h3 class="inner-title">
+              <a href="#">Product Title</a>
+            </h3>
+            <div class="inner-price-new">PriceNew$</div>
+            <div class="inner-price-old">Price$</div>
+            <div class="inner-discount">-DiscountPercentage%</div>
+          </div>
+        </div>
+      </div>
+      <!-- Repeat above block for each product if needed -->
+    </div> {% endcomment %}
+  </div>
+{% endblock %}
