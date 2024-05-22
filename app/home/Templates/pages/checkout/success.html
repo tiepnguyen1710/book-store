@@ -1,0 +1,39 @@
+{% extends "../../layouts/default.html" %}
+{% load static %}
+
+{% block main %}
+<div class="container my-3">
+    <div class="row">
+        <div class="col-12">
+            <h1>Đặt hàng thành công</h1>
+            <p>Cảm ơn bạn đã đặt hàng. Thông tin đơn hàng của bạn như sau:</p>
+            <ul>
+                <li><strong>Họ tên:</strong> {{ order.full_name }}</li>
+                <li><strong>Số điện thoại:</strong> {{ order.phone }}</li>
+                <li><strong>Địa chỉ:</strong> {{ order.address }}</li>
+            </ul>
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>Sản phẩm</th>
+                        <th>Giá</th>
+                        <th>Số lượng</th>
+                        <th>Tổng</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in order_items %}
+                    <tr>
+                        <td>{{ item.product.title }}</td>
+                        <td>{{ item.price_new }}$</td>
+                        <td>{{ item.quantity }}</td>
+                        <td>{{ item.total_item_price }}$</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <h3>Tổng đơn hàng: {{ order.total_price }}$</h3>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -36,7 +36,7 @@
                 <div class="inner-stock">Còn lại <span>{{ product.stock }}</span> sản phẩm</div>
                 {% endif %}
 
-                <form action="/cart/add/{{ product.id }}" method="POST">
+                <form action="/cart/add/{{ product.id }}/" method="POST">
                     {% csrf_token %}
                     <input class="form-control mb-2" type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
                     <button type="submit" class="btn btn-success btn-block">Thêm vào giỏ hàng</button>

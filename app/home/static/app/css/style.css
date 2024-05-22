@@ -145,3 +145,8 @@
     max-width: 100%;
   }
   /* End product-detail */
+
+.full-width-image {
+    width: 100%;
+    height: auto;
+}
