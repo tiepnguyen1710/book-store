@@ -4,8 +4,14 @@
 {% block main %}
 <div class="container my-3">
     <div class="row">
+        <div class="col-12">
+            <h1>Kết quả tìm kiếm</h1>
+        </div>
+    </div>
+
+    <div class="row">
         {% for item in products %}
-        <div class="col-3 mb-3">
+        <div class="col-4 mb-3">
             <div class="product-item">
                 <div class="inner-image">
                     <a href="/products/detail/{{ item.slug }}">
@@ -24,27 +30,5 @@
         </div>
         {% endfor %}
     </div>
-    <nav>
-    <ul class="pagination">
-        {% if object_pagination.current_page > 1 %}
-                <li class="page-item">
-                    <button class="page-link" onclick="location.href='?page={{ object_pagination.current_page|add:-1 }}'">Trang trước</button>
-                </li>
-        {% endif %}
-
-
-        {% for i in page_numbers %}
-                <li class="page-item {% if object_pagination.current_page == i %}active{% endif %}">
-                    <button class="page-link" onclick="location.href='?page={{ i }}'">{{ i }}</button>
-                </li>
-        {% endfor %}
-
-        {% if object_pagination.current_page < object_pagination.total_page %}
-                <li class="page-item">
-                    <button class="page-link" onclick="location.href='?page={{ object_pagination.current_page|add:1 }}'">Kế tiếp</button>
-                </li>
-        {% endif %}
-    </ul>
-</nav>
 </div>
 {% endblock %}

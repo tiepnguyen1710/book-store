@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.contrib import messages
 from decimal import Decimal
 from .models import Product, ProductCategory, Cart, CartItem, Order, OrderItem, CustomUser
+from home.helper.pagination_helper import get_pagination
 
 # Create your views here.
 
@@ -17,17 +18,29 @@ def products(request):
     products = Product.objects.filter(deleted=False)
     #print(products)
     print(type(products))
+    count_records = products.count()
+
+    # Sử dụng helper để lấy thông tin phân trang
+    pagination = get_pagination(request, count_records)
+
+    # Cập nhật queryset để chỉ lấy các sản phẩm cho trang hiện tại
+    products = products[pagination['skip']:pagination['skip'] + pagination['limit_items']]
+
 
     for product in products:
         product.priceNew = product.price * (1 - product.discount_percentage / 100)
         product.priceNew = round(product.priceNew, 0)
         product.price = round(product.price, 0)
         product.discount_percentage = round(product.discount_percentage, 0)
+    
+    page_numbers = range(1, pagination['total_page'] + 1)
 
     # Render template với các sản phẩm
     context = {
         'pageTitle': "Danh sách sản phẩm",
-        'products': products
+        'products': products,
+        'object_pagination': pagination,
+        'page_numbers': page_numbers
     }
     return render(request, 'pages/products/index.html', context)
 
@@ -297,7 +310,7 @@ def loginPost(request):
             if user.password == password:
                 # Xử lý đăng nhập thành công
                 django_login(request, user)
-                messages.success(request, 'Đăng nhập thành công!')
+                messages.success(request, 'Đăng nhập')
                 response = redirect('/')
                 response.set_cookie('token_user', user.token_user)
                 # cart = Cart.objects.get(id=cart_id)
@@ -336,3 +349,24 @@ def logout(request):
     #response.delete_cookie('cart_id')
     response.delete_cookie('token_user')
     return response
+
+def search(request):
+    keyword = request.GET.get('keyword', '')
+
+    if keyword:
+        products = Product.objects.filter(
+            title__icontains=keyword,
+            deleted=False,
+        )
+        for item in products:
+            item.priceNew = round(item.price * (100 - item.discount_percentage) / 100)
+    else:
+        products = []
+
+    context = {
+        'pageTitle': 'Kết quả tìm kiếm',
+        'keyword': keyword,
+        'products': products
+    }
+
+    return render(request, "pages/search/index.html", context)

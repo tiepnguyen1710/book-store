@@ -17,5 +17,6 @@ urlpatterns = [
     path('user/registerPost', views.registerPost, name='register'),
     path('user/login', views.login, name='login'),
     path('user/loginPost', views.loginPost, name='loginPost'),
-    path('user/logout', views.logout, name='logout')
+    path('user/logout', views.logout, name='logout'),
+    path('search', views.search, name='search'),
 ]
