@@ -150,3 +150,31 @@
     width: 100%;
     height: auto;
 }
+
+/* Alert */
+
+#alert-container {
+  position: fixed;
+  top: 70px;
+  right: 15px;
+  z-index: 1000; /* Đảm bảo nó hiển thị trên tất cả các phần khác */
+}
+
+/* CSS cho animation */
+.alert-hidden {
+  animation-name: alert-hidden;
+  animation-duration: 0.5s;
+  animation-fill-mode: both;
+}
+
+@keyframes alert-hidden {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    display: none;
+  }
+}
+
+/* end alert */

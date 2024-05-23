@@ -50,6 +50,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'home.middleware.CartMiddleware',
+    'home.middleware.UserInfoMiddleware',
 ]
 
 ROOT_URLCONF = 'app.urls'
@@ -130,3 +131,5 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CART_COOKIE_MAX_AGE = 604800
+
+AUTH_USER_MODEL = 'home.CustomUser'

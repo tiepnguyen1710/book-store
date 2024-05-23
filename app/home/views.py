@@ -1,9 +1,12 @@
 from django.shortcuts import render, redirect, get_object_or_404
+from django.contrib.auth import logout as django_logout
+from django.contrib.auth import authenticate, login as django_login
 from django.views.decorators.http import require_POST
 from django.http import HttpResponseRedirect
 from django.urls import reverse
+from django.contrib import messages
 from decimal import Decimal
-from .models import Product, ProductCategory, Cart, CartItem, Order, OrderItem
+from .models import Product, ProductCategory, Cart, CartItem, Order, OrderItem, CustomUser
 
 # Create your views here.
 
@@ -238,3 +241,98 @@ def checkout_order(request):
 #         order.total_price += item.total_price
 
 #     return render(request, 'pages/checkout/success.html', {'order': order})
+
+def register(request):
+    return render(request, 'pages/user/register.html')
+
+def generate_random_string(length):
+    import random
+    import string
+    characters = string.ascii_letters + string.digits
+    result = ''.join(random.choice(characters) for _ in range(length))
+    return result
+
+def registerPost(request):
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        full_name = request.POST.get('fullName')
+        password = request.POST.get('password')
+
+        # Kiểm tra xem email đã tồn tại chưa
+        if CustomUser.objects.filter(email=email).exists():
+            messages.error(request, "Email đã tồn tại!")
+            return redirect(request.META.get('HTTP_REFERER', '/'))
+
+        # Tạo người dùng mới
+        token_user = generate_random_string(30)
+        #hashed_password = hashlib.md5(password.encode()).hexdigest()
+
+        user = CustomUser.objects.create(
+            full_name=full_name,
+            email=email,
+            #password=hashed_password,
+            password=password,
+            token_user=token_user
+        )
+
+        # Đặt cookie token_user
+        response = redirect('/')
+        response.set_cookie('token_user', token_user)
+
+        return response
+
+    return render(request, 'register.html')
+
+def login(request):
+    return render(request, 'pages/user/login.html')
+
+def loginPost(request):
+    cart_id = getattr(request, 'cart_id', None)
+    if request.method == 'POST':
+        email = request.POST.get('email')
+        password = request.POST.get('password')
+
+        try:
+            user = CustomUser.objects.get(email=email)
+            if user.password == password:
+                # Xử lý đăng nhập thành công
+                django_login(request, user)
+                messages.success(request, 'Đăng nhập thành công!')
+                response = redirect('/')
+                response.set_cookie('token_user', user.token_user)
+                # cart = Cart.objects.get(id=cart_id)
+                # cart.user = user
+                # cart.save()
+                return response
+                # if cart_id:
+                #     try:
+                #         cart = Cart.objects.get(id=cart_id)
+                #         cart.user = user
+                #         cart.save()
+                #     except Cart.DoesNotExist:
+                #         cart = Cart.objects.create(user=user)
+                # else:
+                # cart = Cart.objects.filter(user=user).first()
+                # response.set_cookie('cart_id', cart.id, max_age=3600*24*7)
+
+                #return response
+            else:
+                # Xử lý sai mật khẩu
+                messages.error(request, 'Sai mật khẩu!')
+                return redirect('login')
+        except CustomUser.DoesNotExist:
+            # Xử lý email không tồn tại
+            messages.error(request, 'Email không tồn tại!')
+            return redirect('login')
+        
+        
+
+    return redirect('login')
+
+
+def logout(request):
+    django_logout(request)
+    response = redirect('/')
+    #response.delete_cookie('cart_id')
+    response.delete_cookie('token_user')
+    return response

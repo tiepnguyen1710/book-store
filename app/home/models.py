@@ -1,5 +1,7 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
+from django.contrib.auth.models import Group, Permission
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
@@ -35,6 +37,7 @@ class ProductCategory(models.Model):
         return self.title
 
 class Cart(models.Model):
+    user = models.ForeignKey('CustomUser', on_delete=models.SET_NULL, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -64,3 +67,18 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f'{self.quantity} x {self.product.title}'
+
+class CustomUser(AbstractUser):
+    full_name = models.CharField(max_length=255)
+    email = models.EmailField(unique=True)
+    password = models.CharField(max_length=255)
+    token_user = models.CharField(max_length=255, blank=True, null=True)
+    phone = models.CharField(max_length=15, blank=True, null=True)
+    avatar = models.URLField(blank=True, null=True)
+    groups = models.ManyToManyField(Group, related_name='custom_user_groups', blank=True, verbose_name='Groups')
+    user_permissions = models.ManyToManyField(Permission, related_name='custom_user_permissions', blank=True, verbose_name='User Permissions')
+    
+
+    def __str__(self):
+        return self.full_name
+    

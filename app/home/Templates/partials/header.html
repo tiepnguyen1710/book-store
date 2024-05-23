@@ -9,12 +9,12 @@
             </a>
           </div>
         </div>
-        <div class="col-5">
+        <div class="col-4">
           <div class="inner-menu">
             <ul>
-              <li>
+              {% comment %} <li>
                 <a href="/">Trang chủ</a>
-              </li>
+              </li> {% endcomment %}
               <li class="sub-menu">
                 <a href="/products">Sản phẩm</a>
               </li>
@@ -47,15 +47,24 @@
             </div>
           </form>
         </div>
-        <div class="col-3">
+        <div class="col-4">
           <div class="inner-menu">
             <ul>
                 <li>
                   <a href="/cart">Giỏ hàng({{ miniCart.products|length }})</a>
                 </li>
+                {% if request.user %}
+                    <li><a href="/user/logout">Đăng xuất</a></li>
+                {% else %}
+                    <li><a href="/user/login">Đăng nhập</a></li>
+                    <li><a href="/user/register">Đăng ký</a></li>
+                {% endif %}
+                {% comment %} <li>
+                  <a href="/user/login">Đăng nhập</a>
+                </li>
                 <li>
                   <a href="/user/register">Đăng kí</a>
-                </li>
+                </li> {% endcomment %}
             </ul>
           </div>
         </div>
