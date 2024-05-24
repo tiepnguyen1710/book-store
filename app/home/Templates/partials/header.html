@@ -54,6 +54,7 @@
                   <a href="/cart">Giỏ hàng({{ miniCart.products|length }})</a>
                 </li>
                 {% if request.user %}
+                    <li><a href="#">Hello, {{request.user.full_name}}</a></li>
                     <li><a href="/user/logout">Đăng xuất</a></li>
                 {% else %}
                     <li><a href="/user/login">Đăng nhập</a></li>

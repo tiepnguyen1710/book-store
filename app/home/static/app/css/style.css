@@ -1,3 +1,27 @@
+body {
+  background-color: #F7F7F7;
+}
+
+a {
+  color: #7A7E7F;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none; /* Hoặc bất kỳ kiểu nào bạn muốn khi hover */
+}
+
+.row {
+  background-color: #FFFFFF; /* Màu nền trắng */
+  padding: 25px; /* Thêm padding để tạo khoảng cách giữa các hàng */
+  margin-bottom: 20px; /* Thêm margin dưới để tạo khoảng cách giữa các hàng */
+  border-radius: 25px;
+}
+
+.pic-1 {
+  margin-bottom: 12px;
+}
+
 /* Header */
 .header {
     border-bottom: 1px solid #ddd;
@@ -140,6 +164,10 @@
     padding: 3px 6px;
     border-radius: 8px;
   }
+
+  .product-detail .inner-desc{
+    margin-top: 20px;
+  }
   
   .product-detail .inner-desc img {
     max-width: 100%;
@@ -178,3 +206,52 @@
 }
 
 /* end alert */
+
+/* section-nine */
+.section-nine {
+  background-color: #F2F2FE;
+  padding: 0px 0; 
+}
+
+.section-nine .inner-head {
+  text-align: center;
+  margin-bottom: 45px;
+}
+
+.section-nine .inner-head .inner-title {
+  font-size: 30px;
+  margin-bottom: 25px;
+}
+
+.section-nine .inner-head .inner-desc {
+  font-size: 15px;
+  font-weight: 400;
+  color: #6F8BA4;
+}
+
+.section-nine .inner-left .left-title{
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 40px;
+}
+
+.section-nine .inner-left .left-desc {
+  font-size: 15px;
+  font-weight: 400;
+  color: #6F8BA4;
+}
+
+.section-nine .inner-right .form-control {
+  border-radius: 18px;
+  margin-bottom: 30px;
+}
+
+.section-nine .inner-right .inner-button {
+  padding: 15px;
+}
+.section-nine .inner-right .inner-button a{
+  font-size: 13px;
+  text-decoration: none;
+}
+/* end-section-nine */
+

@@ -4,12 +4,151 @@
 {% block main %}
   <div class="container my-3">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 pic-1">
                 <!-- Hiển thị ảnh -->
                 <img src="https://bookbuy.vn/Res/Images/Album/30172f9f-bd3a-48b3-9ec5-c7a110607a14.jpg?w=880&scale=both&h=320&mode=crop" alt="Book Image" class="full-width-image">
             </div>
+            <div class="col-4">
+              <img src="https://bookbuy.vn/Res/Images/Album/d425cbf2-4fbf-49c0-8b5c-f3f14bc10992.jpg?w=880&scale=both&h=320&mode=crop" alt="Book Image 1" class="img-fluid">
+            </div>
+            <div class="col-4">
+                <img src="https://bookbuy.vn/Res/Images/Album/2c7fe663-f09b-41fd-b367-4a484ad8bbae.jpg?w=880&scale=both&h=320&mode=crop" alt="Book Image 2" class="img-fluid">
+            </div>
+            <div class="col-4">
+                <img src="https://bookbuy.vn/Res/Images/Album/3dc9db62-b9b6-4f44-a584-c67eaa332c31.jpg?w=880&scale=both&h=320&mode=crop" alt="Book Image 3" class="img-fluid">
+            </div>
+        </div>
+
+      <div class="row">
+          <div class = "col-12">
+              <h2>Danh mục sách</h2>
+          </div>
+          
+        
+        <div class="col-3 mb-3">
+            <div class="product-item">
+                <div class="inner-image">
+                    <a href="/categories/tieu-thuyet/">
+                        <img src="https://cdn0.fahasa.com/media/catalog/product/x/u/xu-cat---600.jpg" alt="{{ item.title }}">
+                    </a>
+                </div>
+                <div class="inner-content">
+                    <h3 class="inner-title">
+                        <a href="/categories/tieu-thuyet/">Tiểu thuyết</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 mb-3">
+            <div class="product-item">
+                <div class="inner-image">
+                    <a href="/categories/tam-li-ki-nang-song/">
+                        <img src="https://cdn0.fahasa.com/media/catalog/product/i/m/image_230367.jpg" alt="{{ item.title }}">
+                    </a>
+                </div>
+                <div class="inner-content">
+                    <h3 class="inner-title">
+                        <a href="/categories/tam-li-ki-nang-song/">Tâm lí - Kĩ năng sống</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 mb-3">
+            <div class="product-item">
+                <div class="inner-image">
+                    <a href="/categories/kinh-te/">
+                        <img src="https://cdn0.fahasa.com/media/catalog/product/b/_/b_a-1_5_14.jpg" alt="{{ item.title }}">
+                    </a>
+                </div>
+                <div class="inner-content">
+                    <h3 class="inner-title">
+                        <a href="/categories/kinh-te/">Kinh tế</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+        <div class="col-3 mb-3">
+            <div class="product-item">
+                <div class="inner-image">
+                    <a href="/categories/khoa-hoc/">
+                        <img src="https://cdn0.fahasa.com/media/catalog/product/b/i/biaao-01.jpg" alt="{{ item.title }}">
+                    </a>
+                </div>
+                <div class="inner-content">
+                    <h3 class="inner-title">
+                        <a href="/categories/khoa-hoc/">Khoa học</a>
+                    </h3>
+                </div>
+            </div>
+        </div>
+     </div>
+    
+    <div class="row">
+      <div class = "col-12">
+        <h2>Sản phẩm nổi bật</h2>
+      </div>
+      {% for item in products %}
+        <div class="col-3 mb-3">
+            <div class="product-item">
+                <div class="inner-image">
+                    <a href="/products/detail/{{ item.slug }}">
+                        <img src="{{ item.thumbnail }}" alt="{{ item.title }}">
+                    </a>
+                </div>
+                <div class="inner-content">
+                    <h3 class="inner-title">
+                        <a href="/products/detail/{{ item.slug }}">{{ item.title }}</a>
+                    </h3>
+                    <div class="inner-price-new">{{ item.priceNew }}đ</div>
+                    <div class="inner-price-old">{{ item.price }}đ</div>
+                    <div class="inner-discount">-{{ item.discount_percentage }}%</div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+    </div>
+
+    <!-- section-nine -->
+    <div class="section-nine">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-lg-4 col-md-4 col-sm-12">
+                    <div class="inner-left">
+                        <h3 class="left-title">Keep in touch</h3>
+                        <p class="left-desc">110-220 Quisque diam odio, maximus ac consectetur eu, 10260
+                            auctor non lorem</p>
+                        <p class="left-desc">You are NOT allowed to re-distribute Softy Pinko template on any template collection websites. Thank you.</p>
+                    </div>
+                </div>
+                <div class="col-xl-8 col-lg-8 col-md-8 col-sm-12">
+                    <div class="inner-right">
+                        <form action="#" class="inner-form">
+                            <div class="row">
+                                <div class="col-xl-6 col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <input type="text" required placeholder="Name" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xl-6 col-lg-6 col-md-12">
+                                    <div class="form-group">
+                                        <input type="email" required placeholder="Email" class="form-control">
+                                    </div>
+                                </div>
+                                <div class="col-xl-12">
+                                    <textarea name="" id="" required placeholder="Your Message" class="form-control" cols="15" rows="6"></textarea>
+                                </div>
+                                <div class="inner-button">
+                                    <a href="#" class="button button-one">SEND MESSAGE</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
+    <!-- end-section-nine -->
 
     {% comment %} <div class="row">
       <!-- Loop through productsFeatured if they were passed in -->

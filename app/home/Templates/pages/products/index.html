@@ -3,6 +3,24 @@
 
 {% block main %}
 <div class="container my-3">
+    <div class="card mb-3">
+        <div class="card-header">Sắp xếp</div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-4">
+                    <div sort>
+                        <select class="form-control" name="sort" sort-select>
+                            <option value="price-desc">Giá giảm dần</option>
+                            <option value="price-asc">Giá tăng dần</option>
+                            <option value="title-asc">Tiêu đề A - Z</option>
+                            <option value="title-desc">Tiêu đề Z - A</option>
+                        </select>
+                        {% comment %} <button class="btn btn-danger mt-2" sort-clear>Clear</button> {% endcomment %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         {% for item in products %}
         <div class="col-3 mb-3">
@@ -16,8 +34,8 @@
                     <h3 class="inner-title">
                         <a href="/products/detail/{{ item.slug }}">{{ item.title }}</a>
                     </h3>
-                    <div class="inner-price-new">{{ item.priceNew }}$</div>
-                    <div class="inner-price-old">{{ item.price }}$</div>
+                    <div class="inner-price-new">{{ item.priceNew }}đ</div>
+                    <div class="inner-price-old">{{ item.price }}đ</div>
                     <div class="inner-discount">-{{ item.discount_percentage }}%</div>
                 </div>
             </div>
@@ -28,20 +46,20 @@
     <ul class="pagination">
         {% if object_pagination.current_page > 1 %}
                 <li class="page-item">
-                    <button class="page-link" onclick="location.href='?page={{ object_pagination.current_page|add:-1 }}'">Trang trước</button>
+                    <button class="page-link" onclick="location.href='?page={{ object_pagination.current_page|add:-1 }}&sortKey={{ sort_key }}&sortValue={{ sort_value }}'">Trang trước</button>
                 </li>
         {% endif %}
 
 
         {% for i in page_numbers %}
                 <li class="page-item {% if object_pagination.current_page == i %}active{% endif %}">
-                    <button class="page-link" onclick="location.href='?page={{ i }}'">{{ i }}</button>
+                    <button class="page-link" onclick="location.href='?page={{ i }}&sortKey={{ sort_key }}&sortValue={{ sort_value }}'">{{ i }}</button>
                 </li>
         {% endfor %}
 
         {% if object_pagination.current_page < object_pagination.total_page %}
                 <li class="page-item">
-                    <button class="page-link" onclick="location.href='?page={{ object_pagination.current_page|add:1 }}'">Kế tiếp</button>
+                    <button class="page-link" onclick="location.href='?page={{ object_pagination.current_page|add:1 }}&sortKey={{ sort_key }}&sortValue={{ sort_value }}'">Kế tiếp</button>
                 </li>
         {% endif %}
     </ul>

@@ -21,11 +21,11 @@
                 {% endif %}
 
                 {% if product.priceNew %}
-                <div class="inner-price-new">{{ product.priceNew }}$</div>
+                <div class="inner-price-new">{{ product.priceNew }} đ</div>
                 {% endif %}
 
                 {% if product.price %}
-                <div class="inner-price-old">{{ product.price }}$</div>
+                <div class="inner-price-old">{{ product.price }} đ</div>
                 {% endif %}
 
                 {% if product.discount_percentage %}
@@ -41,7 +41,7 @@
                     <input class="form-control mb-2" type="number" name="quantity" value="1" min="1" max="{{ product.stock }}">
                     <button type="submit" class="btn btn-success btn-block">Thêm vào giỏ hàng</button>
                 </form>
-
+                
                 <div class="inner-desc">{{ product.description | safe }}</div>
             </div>
         </div>

@@ -39,20 +39,26 @@
                         <td>
                             {{ item.product.title }}
                         </td>
-                        <td>{{ item.price_new }}$</td>
+                        <td>{{ item.price_new }} đ</td>
                         <td>
                             {{ item.quantity }}
                         </td>
-                        <td>{{ item.total_item_price }}$</td>
+                        <td>{{ item.total_item_price }} đ</td>
                         
                     </tr>
                     {% endfor %}
                 </tbody>
             </table>
         </div>
+        <div class="col-12 text-right">
+            <h3>Tổng đơn hàng: {{ total_price }}$</h3>
+        </div>
+        {% comment %} <div class="col-12 text-right mt-3">
+            <a href="/checkout" class="btn btn-success">THANH TOÁN</a>
+        </div> {% endcomment %}
     </div>
 
-    <div class="row">
+    {% comment %} <div class="row">
         <div class="col-12 text-right">
             <h3>Tổng đơn hàng: {{ total_price }}$</h3>
         </div>
@@ -62,7 +68,7 @@
         <div class="col-12 text-right mt-3">
             <a href="/checkout" class="btn btn-success">THANH TOÁN</a>
         </div>
-    </div>
+    </div> {% endcomment %}
 
     <div class="row">
         <div class="col-12">

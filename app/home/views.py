@@ -7,21 +7,42 @@ from django.urls import reverse
 from django.contrib import messages
 from decimal import Decimal
 from .models import Product, ProductCategory, Cart, CartItem, Order, OrderItem, CustomUser
-from home.helper.pagination_helper import get_pagination
+from home.helper.pagination_helper import get_pagination, get_pagination_home
 
 # Create your views here.
 
 def index(request):
-    return render(request, 'pages/home/index.html')
+    products = Product.objects.filter(deleted=False, featured=True)
+
+    for product in products:
+        product.priceNew = product.price * (1 - product.discount_percentage / 100)
+        product.priceNew = round(product.priceNew, 0)
+        product.price = round(product.price, 0)
+        product.discount_percentage = round(product.discount_percentage, 0)
+    context = {
+        'pageTitle': "Trang chủ",
+        'products' : products
+    }
+    return render(request, 'pages/home/index.html', context)
 
 def products(request):
     products = Product.objects.filter(deleted=False)
     #print(products)
     print(type(products))
+    # Xử lý sắp xếp
+    sort_key = request.GET.get('sortKey', 'price')
+    sort_value = request.GET.get('sortValue', 'desc')
+    if sort_value == 'asc':
+        order_by = sort_key
+    else:
+        order_by = f'-{sort_key}'
+
+    products = products.order_by(order_by)
+
     count_records = products.count()
 
     # Sử dụng helper để lấy thông tin phân trang
-    pagination = get_pagination(request, count_records)
+    pagination = get_pagination_home(request, count_records)
 
     # Cập nhật queryset để chỉ lấy các sản phẩm cho trang hiện tại
     products = products[pagination['skip']:pagination['skip'] + pagination['limit_items']]
@@ -40,7 +61,9 @@ def products(request):
         'pageTitle': "Danh sách sản phẩm",
         'products': products,
         'object_pagination': pagination,
-        'page_numbers': page_numbers
+        'page_numbers': page_numbers,
+        'sort_key': sort_key,
+        'sort_value': sort_value
     }
     return render(request, 'pages/products/index.html', context)
 
@@ -53,7 +76,7 @@ def detail(request, slug):
 
         context = {
             "pageTitle": "Chi tiết sản phẩm", 
-            "product": product
+            "product": product,
         }
         return render(request, 'pages/products/detail.html', context)
     except Product.DoesNotExist:
@@ -63,15 +86,40 @@ def category(request, slug):
     category = get_object_or_404(ProductCategory, slug=slug)
     products = Product.objects.filter(category=category, deleted=False)
 
+    # Xử lý sắp xếp
+    sort_key = request.GET.get('sortKey', 'price')
+    sort_value = request.GET.get('sortValue', 'desc')
+    if sort_value == 'asc':
+        order_by = sort_key
+    else:
+        order_by = f'-{sort_key}'
+
+    products = products.order_by(order_by)
+
+    count_records = products.count()
+
+    # Sử dụng helper để lấy thông tin phân trang
+    pagination = get_pagination(request, count_records)
+
+    # Cập nhật queryset để chỉ lấy các sản phẩm cho trang hiện tại
+    products = products[pagination['skip']:pagination['skip'] + pagination['limit_items']]
+
     for product in products:
         product.priceNew = product.price * (1 - product.discount_percentage / 100)
         product.priceNew = round(product.priceNew, 0)
         product.price = round(product.price, 0)
         product.discount_percentage = round(product.discount_percentage, 0)
+
+    page_numbers = range(1, pagination['total_page'] + 1)
     
     context = {
+        "pageTitle": "Danh mục",
         'category': category,
         'products': products,
+        'object_pagination': pagination,
+        'page_numbers': page_numbers,
+        'sort_key': sort_key,
+        'sort_value': sort_value
     }
     return render(request, 'pages/categories/index.html', context)
 
@@ -125,7 +173,7 @@ def cart_index(request):
         })
 
     return render(request, 'pages/cart/index.html', {
-        'page_title': 'Giỏ hàng',
+        'pageTitle': 'Giỏ hàng',
         'cart_items': cart_items,
         'total_price': total_price,
     })
@@ -224,9 +272,12 @@ def checkout_order(request):
 
         for item in OrderItem.objects.filter(order=order):
             product = item.product
-            item.price_new = (product.price * (100 - product.discount_percentage) / 100).quantize(Decimal('0.01'))
+            item.price_new = (product.price * (100 - product.discount_percentage) / 100)
+            item.price_new = round(item.price_new, 0)
             item.total_price = item.price_new * item.quantity
+            item.total_price = round(item.total_price, 0)
             order.total_price += item.total_price
+            order.total_price = round(order.total_price, 0)
 
             order_items.append({
                 'product': product,
@@ -265,6 +316,19 @@ def generate_random_string(length):
     result = ''.join(random.choice(characters) for _ in range(length))
     return result
 
+def generate_username(email):
+    # Lấy phần trước dấu '@' trong email
+    base_username = email.split('@')[0]
+    username = base_username
+    counter = 1
+
+    # Đảm bảo username là duy nhất
+    while CustomUser.objects.filter(username=username).exists():
+        username = f"{base_username}{counter}"
+        counter += 1
+
+    return username
+
 def registerPost(request):
     if request.method == 'POST':
         email = request.POST.get('email')
@@ -275,6 +339,8 @@ def registerPost(request):
         if CustomUser.objects.filter(email=email).exists():
             messages.error(request, "Email đã tồn tại!")
             return redirect(request.META.get('HTTP_REFERER', '/'))
+        
+        username = generate_username(email)
 
         # Tạo người dùng mới
         token_user = generate_random_string(30)
@@ -283,6 +349,7 @@ def registerPost(request):
         user = CustomUser.objects.create(
             full_name=full_name,
             email=email,
+            username=username,
             #password=hashed_password,
             password=password,
             token_user=token_user
